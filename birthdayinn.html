@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Birthday Surprise For Joy</title>
+    <!-- Google Fonts for Elegant Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-love: #ff4d6d;
+            --secondary-love: #ff758f;
+            --dark-romance: #2b0f1a;
+            --bg-gradient: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-gradient);
+            color: #4a1525;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- LOCKOUT OVERLAY SCREEN --- */
+        #lockout-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffc2d1, #ffe5ec);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            transition: opacity 1s ease-out, visibility 1s ease-out;
+        }
+
+        .lockout-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #ff2a54;
+            margin-bottom: 10px;
+        }
+
+        .lockout-subtitle {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        /* Countdown Timer Grid */
+        .countdown-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 15px;
+            min-width: 75px;
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .time-num {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--dark-romance);
+            display: block;
+        }
+
+        .time-label {
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        /* --- MAIN ROMANTIC CONTENT STYLE --- */
+        #main-content {
+            display: none; /* Hidden completely until timer finishes */
+            opacity: 0;
+            transition: opacity 1.5s ease-in;
+        }
+
+        /* Floating Hearts Layer */
+        .heart {
+            position: fixed;
+            font-size: 1.5rem;
+            color: var(--primary-love);
+            pointer-events: none;
+            z-index: 10;
+            animation: floatUp 6s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.3); opacity: 0; }
+        }
+
+        /* Hero Header Section */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #ff2a54;
+            margin-bottom: 20px;
+            animation: heartbeat 2s infinite;
+            line-height: 1.2;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        /* Love Letter / Quotes Section */
+        .love-letter-section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .letter-card {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 40px 25px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .quote-text {
+            font-style: italic;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        /* Photo Gallery Section */
+        .gallery-section {
+            padding: 40px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .gallery-title {
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            margin-bottom: 40px;
+            color: #ff2a54;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .photo-frame {
+            background: #fff;
+            padding: 15px;
+            padding-bottom: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transform: rotate(var(--r));
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border-radius: 2px;
+        }
+
+        .photo-frame:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 77, 109, 0.2);
+            z-index: 5;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border: 1px solid #f0f0f0;
+        }
+
+        .photo-caption {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            text-align: center;
+            margin-top: 15px;
+            color: var(--dark-romance);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        /* --- Desktop Responsive Adjustments --- */
+        @media (min-width: 768px) {
+            .lockout-title { font-size: 4.5rem; }
+            .countdown-container { gap: 25px; }
+            .time-box { min-width: 100px; padding: 20px; }
+            .time-num { font-size: 3rem; }
+            .hero-title { font-size: 5rem; }
+            .hero-subtitle { font-size: 1.3rem; }
+            .letter-card { padding: 50px 40px; }
+            .quote-text { font-size: 1.4rem; }
+            .gallery-title { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- --- LOCKOUT OVERLAY SCREEN --- -->
+    <div id="lockout-screen">
+        <h1 class="lockout-title">Hold On, Beiby...</h1>
+        <p class="lockout-subtitle">Your Birthday Surprise Is Unlocking In</p>
+        
+        <div class="countdown-container">
+            <div class="time-box"><span class="time-num" id="days">00</span><span class="time-label">Days</span></div>
+            <div class="time-box"><span class="time-num" id="hours">00</span><span class="time-label">Hrs</span></div>
+            <div class="time-box"><span class="time-num" id="minutes">00</span><span class="time-label">Min</span></div>
+            <div class="time-box"><span class="time-num" id="seconds">00</span><span class="time-label">Sec</span></div>
+        </div>
+        <p style="font-style: italic; opacity: 0.7;">Something special is waiting for you ❤️</p>
+    </div>
+
+    <!-- --- MAIN ROMANTIC CONTENT --- -->
+    <div id="main-content">
+        <header>
+            <h1 class="hero-title">Happy Birthday,<br>my beiby Joy! ❤️</h1>
+            <p class="hero-subtitle">Today is all about celebrating you—the most incredible person in my world. I made this just for you to show you how much you mean to me.</p>
+        </header>
+
+        <section class="love-letter-section reveal">
+            <div class="letter-card">
+                <p class="quote-text">"In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine."</p>
+                <p style="font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 0.85rem; color: var(--primary-love);">— For My Favorite Person, Joy</p>
+            </div>
+        </section>
+
+        <section class="gallery-section reveal">
+            <h2 class="gallery-title">Our Favorite Moments Together</h2>
+            <div class="gallery-grid">
+                <!-- Photo 1 -->
+                <div class="photo-frame" style="--r: -3deg;">
+                    <img src="one.jpeg" alt="Joy and Me">
+                    <div class="photo-caption">Where it all began...</div>
+                </div>
+                <!-- Photo 2 -->
+                <div class="photo-frame" style="--r: 2deg;">
+                    <img src="smile.jpeg" alt="Joy's Smile">
+                    <div class="photo-caption">Your beautiful smile</div>
+                </div>
+                <!-- Photo 3 -->
+                <div class="photo-frame" style="--r: -1deg;">
+                    <img src="my love.jpeg" alt="Our Memory">
+                    <div class="photo-caption">My absolute favorite day</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Made with love for my love Joy. Always. ❤️</p>
+        </footer>
+    </div>
+
+    <script>
+        // TARGET TIME: Set to Midnight Tonight (May 25th, 2026)
+        const targetDate = new Date("May 25, 2026 00:00:00").getTime();
+
+        let heartInterval;
+
+        // COUNTDOWN TIMER LOGIC
+        const countdownTimer = setInterval(function() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            // Time calculations
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            // Display results with leading zeros
+            document.getElementById("days").innerText = days < 0 ? "00" : (days < 10 ? "0" + days : days);
+            document.getElementById("hours").innerText = hours < 0 ? "00" : (hours < 10 ? "0" + hours : hours);
+            document.getElementById("minutes").innerText = minutes < 0 ? "00" : (minutes < 10 ? "0" + minutes : minutes);
+            document.getElementById("seconds").innerText = seconds < 0 ? "00" : (seconds < 10 ? "0" + seconds : seconds);
+
+            // If countdown is finished, automatically unlock the page
+            if (difference < 0) {
+                clearInterval(countdownTimer);
+                unlockSurprise();
+            }
+        }, 1000);
+
+        // UNLOCK SURPRISE FUNCTION
+        function unlockSurprise() {
+            const lockout = document.getElementById("lockout-screen");
+            const mainContent = document.getElementById("main-content");
+
+            // Fade out lockout screen safely
+            lockout.style.opacity = "0";
+            setTimeout(() => {
+                lockout.style.visibility = "hidden";
+            }, 1000);
+
+            // Make main romantic content active
+            mainContent.style.display = "block";
+            setTimeout(() => {
+                mainContent.style.opacity = "1";
+                reveal(); // Trigger scroll reveal
+            }, 50);
+
+            // Start falling/floating hearts animation loop
+            heartInterval = setInterval(createHeart, 400);
+        }
+
+        // FLOATING HEARTS GENERATOR
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            const types = ['❤️', '💖', '💝', '💕'];
+            heart.innerText = types[Math.floor(Math.random() * types.length)];
+            
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        // SCROLL-REVEAL LOGIC
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        window.addEventListener("scroll", reveal);
+    </script>
+</body>
+</html>
